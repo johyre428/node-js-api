@@ -2,9 +2,15 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const productsRoutes = require('./api/routes/products');
-const ordersRoutes = require('./api/routes/orders');
+const productsRoutes = require('./api/routes/products.route');
+const ordersRoutes = require('./api/routes/orders.route');
+
+mongoose.connect('mongodb+srv://node-shop:Mouse1234@node-rest-api-shop-grc36.mongodb.net?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 app.use(morgan('dev'));
 
