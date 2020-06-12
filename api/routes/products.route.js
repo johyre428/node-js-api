@@ -7,8 +7,14 @@ const Product = require('../models/product.model')
 
 router.get('/', (req, res) => {
   Product.find()
+    .select('name price _id')
     .then(products => {
-      res.status(200).json(products)
+      const response = {
+        count: products.length,
+        products: products
+      };
+
+      res.status(200).json(response)
     })
     .catch(err => res.status(500).json({ err }));
 });
@@ -22,7 +28,7 @@ router.put('/:id', (req, res) => {
   
   Product.update({ _id: id }, { $set: updateOps })
     .then(result => {
-      res.json(result)
+      res.json({ message: 'Product Updated' })
     })
     .catch(err => {
       res.status(500).json({ err })
@@ -33,7 +39,7 @@ router.delete('/:id', (req, res) => {
   const id = req.params.id;
 
   Product.remove({ _id: id })
-    .then(resp => res.json(resp))
+    .then(resp => res.json({ message: 'Product Deleted' }))
     .catch(err => res.status(500).json({ err }));
 });
 
@@ -41,6 +47,7 @@ router.get('/:id', (req, res) => {
   const id = req.params.id;
   
   Product.findById(id)
+    .select('name price _id')
     .then(product => {
       if (product) {
         res.status(200).json(product);
@@ -63,7 +70,12 @@ router.post('/', (req, res) => {
 
   product.save()
     .then(result => {
-      res.status(200).json(result)
+      const response = {
+        _id: result._id,
+        name: result.name,
+        price: result.price
+      }
+      res.status(200).json(response)
     })
     .catch(err => res.json(err));
 })
