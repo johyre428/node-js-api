@@ -13,7 +13,7 @@ mongoose.connect('mongodb+srv://node-shop:Mouse1234@node-rest-api-shop-grc36.mon
 });
 
 app.use(morgan('dev'));
-
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
