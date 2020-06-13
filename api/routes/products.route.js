@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -83,7 +82,6 @@ router.get('/:id', (req, res) => {
 
 router.post('/', upload.single('productImage'), (req, res) => {
   const product = new Product({
-    _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price,
     productImage: req.file.path

@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -13,7 +12,7 @@ router.get('/', (req, res, next) => {
     .then(orders => {
       res.status(200).json(orders)
     })
-    .catch(err => res.status(500).json({ err }))
+    .catch(err => res.status(500).json(err))
 });
 
 router.post('/', (req, res, next) => {
@@ -41,7 +40,7 @@ router.post('/', (req, res, next) => {
 
       res.status(201).json(response);
     })
-    .catch(err => res.status(500).json({ err }));
+    .catch(err => res.status(500).json(err));
 });
 
 router.get('/:orderId', (req, res, next) => {
@@ -57,7 +56,7 @@ router.get('/:orderId', (req, res, next) => {
         res.status(404).json({ message: 'Order not found' })
       }
     })
-    .catch(err => res.status(500).json({ err }));
+    .catch(err => res.status(500).json(err));
 });
 
 router.delete('/:orderId', (req, res, next) => {
@@ -65,7 +64,7 @@ router.delete('/:orderId', (req, res, next) => {
 
   Order.remove({ _id: id })
     .then(result => res.json({ message: 'Order deleted!'}))
-    .catch(err => res.status(500).json({ err }))
+    .catch(err => res.status(500).json(err))
 });
 
 
