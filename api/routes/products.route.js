@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const checkAuth = require('../middleware/check-auth');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -38,7 +39,7 @@ router.get('/', (req, res) => {
     .catch(err => res.status(500).json({ err }));
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', checkAuth, (req, res) => {
   const id = req.params.id;
   const updateOps = {};
   for (const ops of req.body) {
@@ -54,7 +55,7 @@ router.put('/:id', (req, res) => {
     })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', checkAuth, (req, res) => {
   const id = req.params.id;
 
   Product.remove({ _id: id })
@@ -80,7 +81,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.post('/', upload.single('productImage'), (req, res) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
   const product = new Product({
     name: req.body.name,
     price: req.body.price,
@@ -89,6 +90,7 @@ router.post('/', upload.single('productImage'), (req, res) => {
 
   product.save()
     .then(result => {
+      console.log(result);
       const response = {
         _id: result._id,
         name: result.name,
